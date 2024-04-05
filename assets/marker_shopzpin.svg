@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46666 135.46667"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm" /><defs
+     id="defs1" /><g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"><rect
+       style="fill:#1a1a1a;stroke-width:1"
+       id="rect1"
+       width="135.46666"
+       height="135.46666"
+       x="0"
+       y="0" /><rect
+       style="fill:#ffffff;stroke-width:0.664393"
+       id="rect2"
+       width="90.003082"
+       height="90.003082"
+       x="22.731787"
+       y="22.731787" /><image
+       width="38.265648"
+       height="57.398472"
+       preserveAspectRatio="none"
+       xlink:href="file:///D:/flutter-workspace/projects/shopzpin-merchant/assets/icons/app_icon.png"
+       id="image1"
+       x="48.600502"
+       y="29.550968" /><text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:16.4987px;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Bold';text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:3.89733"
+       x="68.022171"
+       y="107.48851"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#000000;stroke-width:3.89733"
+         x="68.022171"
+         y="107.48851">SHOPZPIN</tspan></text></g></svg>

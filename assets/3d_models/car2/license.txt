@@ -1,0 +1,11 @@
+Model Information:
+* title:	Porsche 997 GT3RSR
+* source:	https://sketchfab.com/3d-models/porsche-997-gt3rsr-fc8695c86f624509a05fd67d7e01be90
+* author:	BadKarma™ (https://sketchfab.com/890244234)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Porsche 997 GT3RSR" (https://sketchfab.com/3d-models/porsche-997-gt3rsr-fc8695c86f624509a05fd67d7e01be90) by BadKarma™ (https://sketchfab.com/890244234) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
