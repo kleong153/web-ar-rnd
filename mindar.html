@@ -1,0 +1,155 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- <script src="./assets/jquery.draggableTouch.js"></script> -->
+
+    <style type="text/css">
+        .mirror-video {
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+        }
+    </style>
+  </head>
+  <body>
+    <div style="position: absolute; z-index: 10;">
+        <select id="device_camera" onchange="selectCamera(this)"></select>
+
+        <span id="drag_pos_debug"></span>
+    </div>
+
+    <!-- <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"> -->
+    <a-scene mindar-image="imageTargetSrc: ./assets/marker_shopzpin.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" mindar-image="filterMinCF:0.1; filterBeta: 10">
+      <a-assets>
+        <!-- <img id="card" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png" /> -->
+        <img id="card" src="./assets/marker_shopzpin.png" />
+        <!-- <a-asset-item id="avatarModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/softmind/scene.gltf"></a-asset-item> -->
+        <a-asset-item id="avatarModel" src="./assets/3d_models/car2/scene.gltf"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!-- <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane> -->
+        <!-- <a-plane src="#card" position="0 0 0" height="1" width="1" rotation="0 0 0" opacity="0.5"></a-plane> -->
+        <!-- <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel" animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"> -->
+        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.06 0.06 0.06" src="#avatarModel">
+      </a-entity>
+    </a-scene>
+
+    <script>
+        let arSystem = null;
+
+        async function getCameras() {
+            try {
+                // Trigger permission
+                await navigator.mediaDevices.getUserMedia({
+                // audio: false,
+                    video: true,
+                });
+
+                // TODO https://stackoverflow.com/questions/18893787/how-can-i-get-a-list-of-video-cameras-attached-in-my-computer-using-javascript
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter((e) => e.kind === 'videoinput');
+
+                console.log("d;;videoDevices:", videoDevices);
+                const deviceCameraList = [];
+
+                videoDevices.forEach((e) => {
+                    deviceCameraList.push({
+                        deviceId: e.deviceId,
+                        label: e.label,
+                    });
+                });
+
+                var deviceCameraDropdown = $("#device_camera");
+                deviceCameraDropdown.empty();
+
+                deviceCameraList.forEach((e) => {
+                    deviceCameraDropdown.append(`<option value="${e.deviceId}">${e.label}</option>`);
+                    // deviceCameraDropdown.append(`<option value="${e.deviceId}">${e.label}</option>`);
+                });
+
+                if (deviceCameraList.length < 1) {
+                    // No available camera, possible permission not grant.
+                    throw new Error();
+                }
+            } catch (error) {
+                console.log(error);
+
+                // Retry after 1 min
+                // Not working, still empty after grant permission
+                // SOLVED by call mediaDevices.getUserMedia() before calling get camera list.
+                // setTimeout(() => getCameras(), 1000);
+            }
+        }
+
+        async function selectCamera(target) {
+            arSystem.pause();
+
+            const selectedDeviceId = $(target).val();
+
+            const mediaStreamRef = await navigator.mediaDevices.getUserMedia({
+                // audio: false,
+                video: {
+                    deviceId: selectedDeviceId,
+                },
+            });
+
+            let shouldMirrorVideo = false;
+
+            // TODO do a button for manual flip
+            // if ($("option:selected", target).html().toLocaleLowerCase().includes("front")) {
+            //     shouldMirrorVideo = true;
+            // }
+
+            // const track = mediaStreamRef.getVideoTracks()[0];
+            // console.log("d;;track settings:", track.getSettings());
+            // track.applyConstraints({
+            //     advanced: [
+            //         {
+            //             focusMode: "continuous",
+            //         },
+            //     ],
+            // });
+
+            const video = $("video")[0];
+            // video.pause();
+            video.src = null;
+            video.srcObject = mediaStreamRef;
+            // video.play();
+
+            if (shouldMirrorVideo) {
+                $("video").addClass("mirror-video");
+            } else {
+                $("video").removeClass("mirror-video");
+            }
+            
+            setTimeout(() => {
+                arSystem.unpause();
+            }, 600);
+        }
+
+        $(function () {
+            getCameras();
+            
+            const sceneEl = document.querySelector('a-scene');
+	        
+            sceneEl.addEventListener('loaded', function () {
+                arSystem = sceneEl.systems["mindar-image-system"];
+            });
+
+            const dragPosDebugText = $("#drag_pos_debug");
+
+            // $(".draggable").draggableTouch();
+
+            // $(".draggable").on("dragstart", function (e, pos) {
+            //     dragPosDebugText.text(`top: ${pos.top}; left: ${pos.left}`);
+            // }).on("dragend", function (e, pos) {
+            //     dragPosDebugText.text(`top: ${pos.top}; left: ${pos.left}`);
+            // });
+        });
+    </script>
+  </body>
+</html>
